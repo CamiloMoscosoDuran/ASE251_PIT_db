@@ -64,8 +64,7 @@ CREATE TABLE estado_cultivo (
 );
 GO
 
----
---- 5. TABLA: PLANIFICACI�N DE COSECHA
+--- 5. TABLA: PLANIFICACIÓN DE COSECHA
 ---
 CREATE TABLE planificacion_cosecha (
     id_cosecha INT IDENTITY(1,1) PRIMARY KEY,
@@ -73,8 +72,13 @@ CREATE TABLE planificacion_cosecha (
     id_cultivo INT FOREIGN KEY REFERENCES cultivos(id_cultivo),
     fecha_recomendada DATE NOT NULL,
     hectareas DECIMAL(10,2) NOT NULL,
-    estado VARCHAR(30) NOT NULL,           -- Ej: 'En Planificaci�n', 'Pendiente', 'En letargo', 'Proyectando'
-    fecha_creacion DATETIME2 DEFAULT GETDATE()
+    produccion_estimada_ton DECIMAL(10,2), -- Necesario para los Reportes
+    estado VARCHAR(30) NOT NULL DEFAULT 'Proyectando', -- 'Programado', 'Pendiente', 'Completado'
+    -- Auditoría unificada para que el Backend no falle
+    created_at DATETIME2 NOT NULL DEFAULT GETDATE(),
+    updated_at DATETIME2,
+    deleted_at DATETIME2,
+    restored_at DATETIME2
 );
 GO
 
@@ -171,18 +175,18 @@ INSERT INTO estado_cultivo (id_campo, id_cultivo, hectareas, fase_actual, estado
 (5, 4, 25.00, 'Cosecha', '�ptimo', 2),
 (3, 2, 15.00, 'En letargo', 'Letargo', 60);
 GO
-Select * from planificacion_cosecha;
+
 ---
---- 5. INSERTS PARA: planificacion_cosecha
+--- 5. INSERTS PARA: planificacion_cosecha (VERSION MEJORADA CON ESTADOS VARIADOS)
 ---
-INSERT INTO planificacion_cosecha (id_campo, id_cultivo, fecha_recomendada, hectareas, estado) VALUES
-(5, 4, '2026-05-20', 25.00, '1'),
-(1, 1, '2026-08-15', 30.00, '1'),
-(4, 5, '2026-07-30', 80.00, '1'),
-(2, 3, '2026-11-25', 45.50, '1'),
-(3, 2, '2027-05-01', 15.00, '1');
--- NOTA: Correg� el nombre de la columna "fecha_recomendada" a "fecha_recommended" 
--- debido a que en tu script original pusiste "fecha_recommended" en la declaraci�n.
+INSERT INTO planificacion_cosecha 
+(id_campo, id_cultivo, fecha_recomendada, hectareas, produccion_estimada_ton, estado) 
+VALUES
+(5, 4, '2026-05-20', 25.00, 35.50, 'Activo'),      -- En proceso ahora mismo
+(1, 1, '2026-08-15', 30.00, 45.20, 'Programado'),  -- Ya tiene fecha fija
+(4, 5, '2026-07-30', 80.00, 120.00, 'Terminado'),  -- Esta ya se completó
+(2, 3, '2026-11-25', 45.50, 12.80, 'Pendiente'),    -- Falta confirmar
+(3, 2, '2027-05-01', 15.00, 60.00, 'Proyectando'); -- Plan a largo plazo
 GO
 
 ---
@@ -220,3 +224,5 @@ INSERT INTO reportes_historicos (id_campo, id_cultivo, mes, anio, produccion_ton
 GO
 Select * from planificacion_siembra;
 Select * from eventos_calendario
+
+select * from planificacion_cosecha;
