@@ -121,14 +121,19 @@ GO
 ---
 CREATE TABLE reportes_historicos (
     id_reporte INT IDENTITY(1,1) PRIMARY KEY,
-    id_campo INT FOREIGN KEY REFERENCES campos(id_campo),
-    id_cultivo INT FOREIGN KEY REFERENCES cultivos(id_cultivo),
+    id_campo INT NOT NULL FOREIGN KEY REFERENCES campos(id_campo),
+    id_cultivo INT NOT NULL FOREIGN KEY REFERENCES cultivos(id_cultivo),
     mes INT NOT NULL,                      -- 1 al 12
     anio INT NOT NULL,                     -- Ej: 2026
     produccion_ton DECIMAL(10,2) NOT NULL, -- Toneladas producidas
     ingresos DECIMAL(12,2) NOT NULL,       -- S/. Ingresos
-    gastos DECIMAL(12,2) NOT NULL          -- S/. Gastos
+    gastos DECIMAL(12,2) NOT NULL,         -- S/. Gastos
+    created_at DATETIME2 NOT NULL DEFAULT GETDATE(),
+    updated_at DATETIME2,
+    deleted_at DATETIME2,
+    restored_at DATETIME2
 );
+
 GO
 
 ---
@@ -219,10 +224,16 @@ INSERT INTO reportes_historicos (id_campo, id_cultivo, mes, anio, produccion_ton
 (2, 3, 3, 2026, 12.80, 95000.00, 42000.00),
 (4, 5, 2, 2026, 120.00, 84000.00, 39000.00),
 (5, 4, 4, 2026, 35.00, 140000.00, 55000.00),
-(3, 2, 1, 2026, 0.00, 0.00, 12000.00); 
+(3, 2, 1, 2026, 0.00, 0.00, 12000.00);
+
 -- NOTA: El �ltimo reporte simula un campo en mantenimiento/letargo (solo gastos, sin producci�n ni ingresos).
 GO
 Select * from planificacion_siembra;
 Select * from eventos_calendario
 
 select * from planificacion_cosecha;
+
+SELECT * FROM reportes_historicos
+
+
+
