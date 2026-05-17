@@ -42,7 +42,7 @@ CREATE TABLE planificacion_siembra (
     id_cultivo INT FOREIGN KEY REFERENCES cultivos(id_cultivo),
     fecha_siembra DATE NOT NULL,
     hectareas INT NOT NULL,
-    estado char(1) NOT NULL DEFAULT 1, 
+    estado BIT NOT NULL DEFAULT 1,
     created_at DATETIME2 NOT NULL DEFAULT GETDATE(),
     updated_at DATETIME2,
     deleted_at DATETIME2,
@@ -112,7 +112,11 @@ CREATE TABLE alertas (
     titulo VARCHAR(100) NOT NULL,          -- Ej: 'Riesgo de helada leve'
     mensaje NVARCHAR(500) NOT NULL,        -- Ej: 'Temperatura m�nima proyectada 8�C...'
     fecha_alerta DATE NOT NULL,
-    activa BIT DEFAULT 1                   -- 1 = Activa, 0 = Archivada
+    estado BIT NOT NULL DEFAULT 1,                  -- 1 = Activa, 0 = Archivada
+    created_at DATETIME2 NOT NULL DEFAULT GETDATE(),
+    updated_at DATETIME2,
+    deleted_at DATETIME2,
+    restored_at DATETIME2
 );
 GO
 
@@ -133,7 +137,6 @@ CREATE TABLE reportes_historicos (
     deleted_at DATETIME2,
     restored_at DATETIME2
 );
-
 GO
 
 ---
@@ -207,12 +210,12 @@ GO
 ---
 --- 7. INSERTS PARA: alertas
 ---
-INSERT INTO alertas (id_campo, id_cultivo, tipo_alerta, titulo, mensaje, fecha_alerta, activa) VALUES
-(4, 5, 'Advertencia', 'Riesgo de helada leve', 'Temperatura m�nima proyectada 8�C en Majes. Tomar previsiones.', '2026-05-16', 1),
-(2, 3, 'Peligro', 'Presencia de Roya', 'Detectado foco de roya amarilla en el lote este del cafetal.', '2026-05-14', 1),
-(1, 1, '�xito', 'Riego Completado', 'Ciclo de fertirriego automatizado ejecutado correctamente.', '2026-05-15', 0),
-(5, 4, 'Informaci�n', 'Disponibilidad de personal', 'Cuadrilla de cosecha confirmada para el d�a 20/05.', '2026-05-16', 1),
-(3, NULL, 'Advertencia', 'Mantenimiento de Canales', 'Corte programado de agua de regad�o por la junta de usuarios.', '2026-05-18', 1);
+INSERT INTO alertas (id_campo, id_cultivo, tipo_alerta, titulo, mensaje, fecha_alerta, estado, created_at, updated_at, deleted_at, restored_at) VALUES
+(4, 5, 'Advertencia', 'Riesgo de helada leve', 'Temperatura mínima proyectada 8°C en Majes. Tomar previsiones.', '2026-05-16', 1, GETDATE(), NULL, NULL, NULL),
+(2, 3, 'Peligro', 'Presencia de Roya', 'Detectado foco de roya amarilla en el lote este del cafetal.', '2026-05-14', 1, GETDATE(), NULL, NULL, NULL),
+(1, 1, 'Éxito', 'Riego Completado', 'Ciclo de fertirriego automatizado ejecutado correctamente.', '2026-05-15', 0, GETDATE(), NULL, NULL, NULL),
+(5, 4, 'Información', 'Disponibilidad de personal', 'Cuadrilla de cosecha confirmada para el día 20/05.', '2026-05-16', 1, GETDATE(), NULL, NULL, NULL),
+(3, NULL, 'Advertencia', 'Mantenimiento de Canales', 'Corte programado de agua de regadío por la junta de usuarios.', '2026-05-18', 1, GETDATE(), NULL, NULL, NULL);
 -- NOTA: El quinto insert deja el id_cultivo en NULL como lo especificaste para alertas generales.
 GO
 
@@ -224,16 +227,9 @@ INSERT INTO reportes_historicos (id_campo, id_cultivo, mes, anio, produccion_ton
 (2, 3, 3, 2026, 12.80, 95000.00, 42000.00),
 (4, 5, 2, 2026, 120.00, 84000.00, 39000.00),
 (5, 4, 4, 2026, 35.00, 140000.00, 55000.00),
-(3, 2, 1, 2026, 0.00, 0.00, 12000.00);
-
+(3, 2, 1, 2026, 0.00, 0.00, 12000.00); 
 -- NOTA: El �ltimo reporte simula un campo en mantenimiento/letargo (solo gastos, sin producci�n ni ingresos).
 GO
 Select * from planificacion_siembra;
 Select * from eventos_calendario
-
-select * from planificacion_cosecha;
-
-SELECT * FROM reportes_historicos
-
-
-
+Select * from alertas;
