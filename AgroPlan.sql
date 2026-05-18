@@ -203,8 +203,8 @@ INSERT INTO eventos_calendario (id_campo, id_cultivo, fecha, tipo_evento, hectar
 (1, 1, '2026-05-18', 'Riego',         30.00, 'Programado', 'Aplicación de riego por goteo con nutrientes',         GETDATE(), NULL, NULL, NULL),
 (2, 3, '2026-05-22', 'Fertilización', 45.50, 'Pendiente',  'Refuerzo de potasio para etapa de maduración',         GETDATE(), NULL, NULL, NULL),
 (5, 4, '2026-05-20', 'Cosecha',       25.00, 'Programado', 'Corte de espárrago verde primera calidad',             GETDATE(), NULL, NULL, NULL),
-(4, 5, '2026-06-01', 'Monitoreo',     80.00, 'Planificado','Evaluación de control de plagas (cogollero)',           GETDATE(), NULL, NULL, NULL),
-(3, 2, '2026-05-25', 'Poda',          15.00, 'Pendiente',  'Poda de formación sanitaria',                          GETDATE(), NULL, NULL, NULL);
+(4, 5, '2026-06-01', 'Riego',     80.00, 'Planificado','Evaluación de control de plagas (cogollero)',           GETDATE(), NULL, NULL, NULL),
+(3, 2, '2026-05-25', 'Siembra',          15.00, 'Pendiente',  'Poda de formación sanitaria',                          GETDATE(), NULL, NULL, NULL);
 GO
 ---
 --- 7. INSERTS PARA: alertas
