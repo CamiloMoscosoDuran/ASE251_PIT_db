@@ -2,7 +2,6 @@
 CREATE DATABASE AgroPlan;
 GO
 
-
 USE AgroPlan;
 GO
 
@@ -14,7 +13,7 @@ CREATE TABLE campos (
     nombre VARCHAR(100) NOT NULL,
     ubicacion VARCHAR(200),
     hectareas INT,
-    estado VARCHAR(30),
+    estado BIT NOT NULL DEFAULT 1,
     fecha_creacion DATETIME2 DEFAULT GETDATE()
 );
 GO
@@ -28,7 +27,7 @@ CREATE TABLE cultivos (
     descripcion VARCHAR(500),
     temporada_siembra VARCHAR(50),
     dias_cosecha INT,
-    estado VARCHAR(30),
+    estado BIT NOT NULL DEFAULT 1,
     fecha_creacion DATETIME2 DEFAULT GETDATE()
 );
 GO
@@ -143,22 +142,22 @@ GO
 --- 1. INSERTS PARA: campos
 ---
 INSERT INTO campos (nombre, ubicacion, hectareas, estado) VALUES
-('Fundo Los Olivos', 'Valle de Ica, Ica', 120, 'Activo'),
-('Fundo Santa Rosa', 'Chanchamayo, Jun�n', 85, 'Activo'),
-('Parcela El Mirador', 'Chao, La Libertad', 50, 'Mantenimiento'),
-('Fundo Tambo Alto', 'Majes, Arequipa', 200, 'Activo'),
-('Fundo La Agraria', 'Huaral, Lima', 65, 'Activo');
+('Fundo Los Olivos', 'Valle de Ica, Ica', 120, '1'),
+('Fundo Santa Rosa', 'Chanchamayo, Jun�n', 85, '1'),
+('Parcela El Mirador', 'Chao, La Libertad', 50, '1'),
+('Fundo Tambo Alto', 'Majes, Arequipa', 200, '1'),
+('Fundo La Agraria', 'Huaral, Lima', 65, '1');
 GO
 
 ---
 --- 2. INSERTS PARA: cultivos
 ---
 INSERT INTO cultivos (nombre, descripcion, temporada_siembra, dias_cosecha, estado) VALUES
-('Ar�ndano Biloxi', 'Variedad de ar�ndano de alta densidad para exportaci�n', 'Oto�o - Invierno', 180, 'Activo'),
-('Palto Hass', 'Palta destinada a mercados europeos y americanos', 'Primavera', 365, 'Activo'),
-('Caf� Caturra', 'Caf� de altura con notas achocolatadas', 'Inicio de lluvias', 270, 'Activo'),
-('Esp�rrago Verde', 'Cultivo permanente de alto rendimiento h�drico', 'Todo el a�o', 120, 'Activo'),
-('Ma�z Amarillo', 'Ma�z duro destinado a la industria forrajera', 'Verano', 110, 'Activo');
+('Ar�ndano Biloxi', 'Variedad de ar�ndano de alta densidad para exportaci�n', 'Oto�o - Invierno', 180, '1'),
+('Palto Hass', 'Palta destinada a mercados europeos y americanos', 'Primavera', 365, '1'),
+('Caf� Caturra', 'Caf� de altura con notas achocolatadas', 'Inicio de lluvias', 270, '1'),
+('Esp�rrago Verde', 'Cultivo permanente de alto rendimiento h�drico', 'Todo el a�o', 120, '1'),
+('Ma�z Amarillo', 'Ma�z duro destinado a la industria forrajera', 'Verano', 110, '1');
 GO
 
 ---
